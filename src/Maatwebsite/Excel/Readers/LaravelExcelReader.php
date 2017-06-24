@@ -652,6 +652,56 @@ class LaravelExcelReader
         }
     }
 
+/*
+    * @desc 返回所有数据
+    * @author 绍兴远帆软件有限公司 主营 ewshop网店系统 远帆自动售货机系统 手机话费流量充值系统 票务销售系统 点餐外卖系统 网店进销存系统
+    * @website http://www.ewshop.net/
+    * */
+    public function readAll()
+    {
+
+        // ../  一般情况不管处于什么子目录子需要这样子即可 例如\app\Admin\Controllers\WechatMercharntPay\OrderListTodayController.php
+        //include_once('../app/libs/phpexcel/phpexcel/IOFactory.php');
+
+        //$this->load ->library('PHPExcel/IOFactory');
+
+
+        //$this->reader =IOFactory::createReader('Excel5');
+
+        //$this->reader->setReadDataOnly(true);
+
+        $objPHPExcel= $this->excel;
+
+        $objWorksheet= $objPHPExcel->getActiveSheet();
+
+        $highestRow =$objWorksheet->getHighestRow();
+
+        //echo$highestRow;die;
+
+        $highestColumn = $objWorksheet->getHighestColumn();
+
+        //echo$highestColumn;die;
+
+        $highestColumnIndex = PHPExcel_Cell::columnIndexFromString($highestColumn);
+
+        $excelData =array();
+
+        for($row = 1;$row <= $highestRow; $row++) {
+
+            for ($col= 0; $col < $highestColumnIndex; $col++) {
+
+                $excelData[$row][]=(string)$objWorksheet->getCellByColumnAndRow($col,$row)->getValue();
+
+            }
+
+        }
+
+        return $excelData;
+
+    }
+
+
+
     /**
      * Parse the file in chunks and queues the processing of each chunk
      *
